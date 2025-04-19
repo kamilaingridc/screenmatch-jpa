@@ -4,9 +4,11 @@ import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.service.OpenAiService;
 
 public class ConsultaChatGPT {
+    static String TOKEN_API = "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";
+
     public static String obterTraducao(String texto) {
         // Instancia o serviço da OpenAI com uma chave de API (token de autenticação)
-        OpenAiService service = new OpenAiService("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");
+        OpenAiService service = new OpenAiService(TOKEN_API);
 
         // Cria uma requisição de completamento (prompt) para o modelo GPT
         CompletionRequest requisicao = CompletionRequest.builder()
@@ -23,4 +25,3 @@ public class ConsultaChatGPT {
         return resposta.getChoices().get(0).getText();
     }
 }
-
