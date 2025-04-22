@@ -31,7 +31,7 @@ public class Principal {
                     """;
 
             System.out.println(menu);
-            leitura.nextInt();
+            opcao = leitura.nextInt();
             leitura.nextLine();
 
             switch (opcao) {
