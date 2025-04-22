@@ -4,7 +4,7 @@ import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.service.OpenAiService;
 
 public class ConsultaChatGPT {
-    static String TOKEN_API = "cole aqui seu token da API";
+    static String TOKEN_API = System.getenv("OPENAI_APIKEY");
 
     public static String obterTraducao(String texto) {
         // Instancia o serviço da OpenAI com uma chave de API (token de autenticação)

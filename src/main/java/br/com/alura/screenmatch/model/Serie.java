@@ -26,6 +26,8 @@ public class Serie {
     @Transient  // por enquanto o JPA ignora e executa a aplicação normalmente.
     private List<Episodio> episodios = new ArrayList<>();
 
+    public Serie(){}
+
     //construtor
     public Serie(DadosSerie dadosSerie){
         this.titulo = dadosSerie.titulo();
