@@ -4,8 +4,10 @@ import br.com.alura.screenmatch.model.DadosSerie;
 import br.com.alura.screenmatch.model.DadosTemporada;
 import br.com.alura.screenmatch.model.Episodio;
 import br.com.alura.screenmatch.model.Serie;
+import br.com.alura.screenmatch.repository.SerieRepositoy;
 import br.com.alura.screenmatch.service.ConsumoApi;
 import br.com.alura.screenmatch.service.ConverteDados;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,6 +20,13 @@ public class Principal {
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apikey=6585022c";
     private List<DadosSerie> dadosSeries = new ArrayList<>();
+
+    // injeção de dependências
+    private SerieRepositoy repository;
+
+    public Principal(SerieRepositoy repository) {
+        this.repository = repository;
+    }
 
     public void exibeMenu() {
         var opcao = -1;
@@ -56,7 +65,9 @@ public class Principal {
     // Método responsável por buscar informações de uma série via API e armazená-las em uma lista
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie(); // Obtém os dados da série a partir do nome digitado pelo usuário
-        dadosSeries.add(dados); // Adiciona os dados obtidos à lista de séries
+        Serie serie = new Serie(dados);
+       // dadosSeries.add(dados); // Adiciona os dados obtidos à lista de séries
+        repository.save(serie);
         System.out.println(dados); // Exibe os dados da série no console
     }
 
