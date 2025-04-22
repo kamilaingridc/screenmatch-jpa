@@ -85,15 +85,15 @@ public class Principal {
     }
 
     // Método que lista as séries já buscadas, ordenadas por gênero
-//    private void listarSeriesBuscadas() {
-//        List<Serie> series = new ArrayList<>();
-//        series = dadosSeries.stream() // Acessa a lista de DadosSerie
-//                .map(d -> new Serie(d)) // Converte cada DadosSerie em um objeto Serie
-//                .collect(Collectors.toList()); // Coleta os objetos Serie em uma nova lista
-//
-//        series.stream()
-//                .sorted(Comparator.comparing(Serie::getGenero)) // Ordena as séries pelo gênero
-//                .forEach(System.out::println); // Exibe as séries ordenadas no console
-//    }
+    private void listarSeriesBuscadas() {
+        List<Serie> series = new ArrayList<>();
+        series = dadosSeries.stream() // Acessa a lista de DadosSerie
+                .map(d -> new Serie(d)) // Converte cada DadosSerie em um objeto Serie
+                .collect(Collectors.toList()); // Coleta os objetos Serie em uma nova lista
+
+        series.stream()
+                .sorted(Comparator.comparing(Serie::getGenero)) // Ordena as séries pelo gênero
+                .forEach(System.out::println); // Exibe as séries ordenadas no console
+    }
 
 }
