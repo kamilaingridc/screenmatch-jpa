@@ -24,7 +24,7 @@ public class Serie {
     private String sinopse;
 
     //@Transient  // por enquanto o JPA ignora e executa a aplicação normalmente.
-    @OneToMany(mappedBy = "serie") // uma série para vários episódios
+    @OneToMany(mappedBy = "serie", cascade=CascadeType.ALL) // uma série para vários episódios
     private List<Episodio> episodios = new ArrayList<>();
 
     public Serie(){}
