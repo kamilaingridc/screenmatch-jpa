@@ -211,7 +211,7 @@ public class Principal {
         System.out.println("Deseja buscar séries com qual avaliação? ");
         var serieAvaliacao = leitura.nextDouble();
         leitura.nextLine();
-        List<Serie> seriePorTemporadaEAvaliacao = repository.findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(numeroTemporadas, serieAvaliacao);
+        List<Serie> seriePorTemporadaEAvaliacao = repository.seriesPorTemporadaEAvaliacao(numeroTemporadas, serieAvaliacao);
         seriePorTemporadaEAvaliacao.forEach(s ->
                 System.out.println(s.getTitulo() + " - avaliação: " + s.getAvaliacao()));
     }
