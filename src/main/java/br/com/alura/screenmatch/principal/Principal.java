@@ -96,87 +96,55 @@ public class Principal {
         }
     }
 
-    // Método responsável por buscar informações de uma série via API e armazená-las em uma lista
     private void buscarSerieWeb() {
-        DadosSerie dados = getDadosSerie(); // Obtém os dados da série a partir do nome digitado pelo usuário
+        DadosSerie dados = getDadosSerie();
         Serie serie = new Serie(dados);
-       // dadosSeries.add(dados); // Adiciona os dados obtidos à lista de séries
         repository.save(serie);
-        System.out.println(dados); // Exibe os dados da série no console
+        System.out.println(dados);
     }
 
-    // Método auxiliar que solicita ao usuário o nome da série, realiza a requisição à API e retorna os dados da série
     private DadosSerie getDadosSerie() {
-        System.out.println("Digite o nome da série para busca"); // Solicita o nome da série ao usuário
-        var nomeSerie = leitura.nextLine(); // Lê o nome da série digitado
-        var json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY); // Realiza a requisição HTTP à API, substituindo espaços por '+'
-        DadosSerie dados = conversor.obterDados(json, DadosSerie.class); // Converte o JSON recebido em um objeto do tipo DadosSerie
-        return dados; // Retorna os dados da série
+        System.out.println("Digite o nome da série para busca");
+        var nomeSerie = leitura.nextLine();
+        var json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
+        DadosSerie dados = conversor.obterDados(json, DadosSerie.class);
+        return dados;
     }
 
-    // Método que busca os episódios por temporada de uma série
     private void buscarEpisodioPorSerie() {
-        // Lista todas as séries que foram buscadas anteriormente
         listarSeriesBuscadas();
-
-        // Solicita ao usuário que digite o nome da série desejada
         System.out.println("Escolha uma série pelo nome: ");
         var nomeSerie = leitura.nextLine();
-
-        // Busca a série pelo nome (ignora maiúsculas/minúsculas) e retorna o primeiro resultado encontrado
         Optional<Serie> serie = repository.findByTituloContainingIgnoreCase(nomeSerie);
-
-        // Verifica se a série foi encontrada
         if (serie.isPresent()) {
-            var serieEncontrada = serie.get(); // Obtém a série encontrada
-
-            // Cria uma lista para armazenar os dados de todas as temporadas da série
+            var serieEncontrada = serie.get();
             List<DadosTemporada> temporadas = new ArrayList<>();
 
-            // Loop para percorrer todas as temporadas da série
             for (int i = 1; i <= serieEncontrada.getTotalTemporadas(); i++) {
-                // Monta a URL da API com o título da série e o número da temporada
                 var json = consumo.obterDados(
                         ENDERECO + serieEncontrada.getTitulo().replace(" ", "+") + "&season=" + i + API_KEY
                 );
-
-                // Converte o JSON retornado em um objeto da classe DadosTemporada
                 DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
-
-                // Adiciona os dados dessa temporada à lista de temporadas
                 temporadas.add(dadosTemporada);
             }
-
-            // Exibe os dados de todas as temporadas no console
             temporadas.forEach(System.out::println);
-
-            // Cria uma lista com todos os episódios de todas as temporadas
             List<Episodio> episodios = temporadas.stream()
-                    .flatMap(d -> d.episodios().stream()  // Para cada temporada, pega a lista de episódios
-                            .map(e -> new Episodio(d.numero(), e))) // Cria um objeto Episodio com o número da temporada e os dados do episódio
+                    .flatMap(d -> d.episodios().stream()
+                            .map(e -> new Episodio(d.numero(), e)))
                     .collect(Collectors.toList());
 
-            // Associa a lista de episódios à série
             serieEncontrada.setEpisodios(episodios);
-
-            // Salva a série com os episódios no repositório (provavelmente no banco de dados)
             repository.save(serieEncontrada);
-
         } else {
-            // Se a série não for encontrada, exibe uma mensagem
             System.out.println("Série não encontrada.");
         }
     }
 
-    // Método que lista as séries já buscadas, ordenadas por gênero
     private void listarSeriesBuscadas() {
         series = repository.findAll();
-        //series = dadosSeries.stream() // Acessa a lista de DadosSerie
-          //      .map(d -> new Serie(d)) // Converte cada DadosSerie em um objeto Serie
-           //     .collect(Collectors.toList()); // Coleta os objetos Serie em uma nova lista
         series.stream()
-                .sorted(Comparator.comparing(Serie::getGenero)) // Ordena as séries pelo gênero
-                .forEach(System.out::println); // Exibe as séries ordenadas no console
+                .sorted(Comparator.comparing(Serie::getGenero))
+                .forEach(System.out::println);
     }
 
     private void buscarSeriePorTitulo() {
