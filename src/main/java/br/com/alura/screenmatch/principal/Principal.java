@@ -43,7 +43,7 @@ public class Principal {
                     8 - Buscar série por temporada e por avaliação
                     9 - Buscar episódio por trecho
                     10 - Buscar episódio por série
-                    11 - Buscar episódios a partir de uma data\s
+                    11 - Buscar episódios a partir de uma data
                     
                     
                     0 - Sair                                 
